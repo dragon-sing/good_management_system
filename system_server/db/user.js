@@ -1,5 +1,5 @@
 // 封装dao层
-const { pool } = require('./pool');
+const { pool } = require('../config/pool');
 
 // 查询所有的用户
 let findUsers = (callback)=>{
@@ -41,15 +41,15 @@ let findById = (id,callback)=>{
     })
 }
 
-// 新增用户或修改用户
+// 修改用户
 let updateUser = (id,obj,callback)=>{
     pool.getConnection((err,connection)=>{
         if(err) {
             console.log(err);
         } else {
             // 修改
-            let sql = 'update user set username=?,password=? where id=?'
-            connection.query(sql,[obj.username,obj.password,id],(err,result)=>{
+            let sql = 'update user set password=? where id=?'
+            connection.query(sql,[obj.password,id],(err,result)=>{
                 if(err) {
                     console.log(err)
                 } else {
