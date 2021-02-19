@@ -1,0 +1,142 @@
+@import './variables.scss';
+
+label {
+    font-weight: 700;
+  }
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
+
+  a:focus,
+  a:active {
+    outline: none;
+  }
+
+  a,
+  a:focus,
+  a:hover {
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  div:focus {
+    outline: none;
+  }
+  
+  .app-container {
+    padding: 20px;
+  }
+  
+  //滚动条
+  ::-webkit-scrollbar-track-piece {
+    background-color: #fff;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #c2c2c2;
+    background-clip: padding-box;
+    min-height: 28px;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 6px;
+  }
+
+dl,
+dt,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+.w50 {
+  width: 50%;
+}
+
+.hide {
+  display: none !important;
+}
+
+// 设置字体颜色
+.fc-primary {
+    color: $--color-primary !important;
+  }
+  
+  .fc-success {
+    color: $--color-success !important;
+  }
+  
+  .fc-warning {
+    color: $--color-warning !important;
+  }
+  
+  .fc-danger {
+    color: $--color-danger !important;
+  }
+  
+  .fc-info {
+    color: $--color-info !important;
+  }
+  
+  .fc-grey {
+    color: #888;
+  }
+  
+  .fc-black {
+    color: #333;
+  }
+
+
+  // mixin 用来实现复用 下拉菜单icon
+@mixin transform($deg) {
+    -moz-transform: rotate($deg);
+    -ms-transform: rotate($deg);
+    -webkit-transform: rotate($deg);
+    transform: rotate($deg);
+  }
+  
+@mixin transform-origin($ox, $oy) {
+    -moz-transform-origin: $ox $oy;
+    -ms-transform-origin: $ox $oy;
+    -webkit-transform-origin: $ox $oy;
+    transform-origin: $ox $oy;
+  }
+  
+ @mixin transition($action) {
+    -moz-transition: $action;
+    -webkit-transition: $action;
+    transition: $action;
+    -o-transition: $action;
+  }
+
+
+//特别显示 这里保留
+.i-arrow-up {
+    margin-left: 5px;
+    height: 13px;
+  
+    &:after {
+      display: inline-block;
+      margin-top: -2px;
+      margin-right: 3px;
+      width: 8px;
+      height: 8px;
+      content: "";
+      @include transform(135deg);
+      @include transform-origin(50%, 40%);
+      @include transition(all .4s);
+      border: 2px solid #515156;
+      border-left: 0;
+      border-bottom: 0;
+      vertical-align: middle;
+    }
+  }
+  
+  .i-arrow-up.is-active::after {
+    @include transform(-45deg);
+  }

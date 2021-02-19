@@ -1,5 +1,4 @@
 #app {
-
   .main-container {
     min-height: 100%;
     transition: margin-left .28s;
@@ -223,4 +222,8 @@
       border-radius: 20px;
     }
   }
+}
+
+.menu-wrapper .el-menu-item .svg-icon {
+  vertical-align: middle;
 }

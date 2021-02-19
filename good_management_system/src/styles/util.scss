@@ -1,0 +1,271 @@
+
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+  
+html {
+  height: 100%;
+  box-sizing: border-box;
+ }
+  
+#app {
+    height: 100%;
+}
+ 
+.fr {
+    float: right;
+  }
+  
+.fl {
+    float: left;
+  }
+  
+
+.clearfix,.cf {
+    &:after {
+      visibility: hidden;
+      display: block;
+      font-size: 0;
+      content: " ";
+      clear: both;
+      height: 0;
+    }
+  }
+
+.text-right {
+    text-align: right;
+  }
+  
+  .text-left {
+    text-align: left;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .block-center {
+    margin: 0 auto;
+  }
+
+
+.flex-center {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+
+  .flex-inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  .flex-between {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .flex-around {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+
+// margin-* padding-* 
+$total: 55;
+@while $total>=0 {
+
+  .mt-#{$total} {
+    margin-top: #{$total}px !important;
+  }
+
+  .mr-#{$total} {
+    margin-right: #{$total}px !important;
+  }
+
+  .mb-#{$total} {
+    margin-bottom: #{$total}px !important;
+  }
+
+  .ml-#{$total} {
+    margin-left: #{$total}px !important;
+  }
+
+  .m-#{$total} {
+    margin: #{$total}px;
+  }
+
+  .pt-#{$total} {
+    padding-top: #{$total}px;
+  }
+
+  .pr-#{$total} {
+    padding-right: #{$total}px;
+  }
+
+  .pb-#{$total} {
+    padding-bottom: #{$total}px;
+  }
+
+  .pl-#{$total} {
+    padding-left: #{$total}px;
+  }
+
+  .p-#{$total} {
+    padding: #{$total}px;
+  }
+
+  $total: $total - 1;
+}
+
+// 字体大小
+$total-font: 20;
+@while $total-font>=8 {
+  .f-#{$total-font} {
+    font-size: #{$total-font}px !important;
+  }
+
+  $total-font: $total-font - 2;
+}
+
+// 字体粗细
+$total-font-weight: 900;
+@while $total-font-weight>=100 {
+  .fw-#{$total-font-weight} {
+    font-weight: #{$total-font-weight} !important;
+  }
+
+  $total-font-weight: $total-font-weight - 100;
+}
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------------------------------------------------
+
+  .no-padding {
+    padding: 0px !important;
+  }
+  
+  .padding-content {
+    padding: 4px 0;
+  }
+  
+
+  .block {
+    display: block;
+  }
+  
+  .pointer {
+    cursor: pointer;
+  }
+  
+  .inlineBlock {
+    display: block;
+  }
+  
+
+  
+  aside {
+    background: #eef1f6;
+    padding: 8px 24px;
+    margin-bottom: 20px;
+    border-radius: 2px;
+    display: block;
+    line-height: 32px;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    color: #2c3e50;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  
+    a {
+      color: #337ab7;
+      cursor: pointer;
+  
+      &:hover {
+        color: rgb(32, 160, 255);
+      }
+    }
+  }
+  
+
+  .components-container {
+    margin: 30px 50px;
+    position: relative;
+  }
+  
+  .pagination-container {
+    margin-top: 30px;
+  }
+  
+
+  
+  .sub-navbar {
+    height: 50px;
+    line-height: 50px;
+    position: relative;
+    width: 100%;
+    text-align: right;
+    padding-right: 20px;
+    transition: 600ms ease position;
+    background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
+  
+    .subtitle {
+      font-size: 20px;
+      color: #fff;
+    }
+  
+    &.draft {
+      background: #d0d0d0;
+    }
+  
+    &.deleted {
+      background: #d0d0d0;
+    }
+  }
+  
+  .link-type,
+  .link-type:focus {
+    color: #337ab7;
+    cursor: pointer;
+  
+    &:hover {
+      color: rgb(32, 160, 255);
+    }
+  }
+  
+  .filter-container {
+    padding-bottom: 10px;
+  
+    .filter-item {
+      display: inline-block;
+      vertical-align: middle;
+      margin-bottom: 10px;
+    }
+  }
+  
+  //refine vue-multiselect plugin
+  .multiselect {
+    line-height: 16px;
+  }
+  
+  .multiselect--active {
+    z-index: 1000 !important;
+  }
+  

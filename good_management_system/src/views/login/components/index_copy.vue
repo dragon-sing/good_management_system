@@ -1,23 +1,23 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
         <h3 class="title">商品管理系统</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="email">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="email"
+          v-model="loginForm.email"
+          placeholder="邮箱"
+          name="email"
           type="text"
           tabindex="1"
-          autocomplete="on"
+          auto-complete="off"
         />
       </el-form-item>
 
@@ -40,69 +40,51 @@
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
-      <el-button :loading="loading" type="primary" class="login-btn" @click.native.prevent="handleLogin">Login</el-button>
+
+      <el-button :loading="loading" class="login-btn" type="primary" @click.native.prevent="handleLogin">
+        <span class="login-text">登&nbsp;&nbsp;录</span>
+      </el-button>
+
     </el-form>
   </div>
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+import { validEmail } from '@/utils/validate'
 
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
+    const validatePassword = (rule, value, cb) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        cb(new Error('密码不能少于六位'))
       } else {
-        callback()
+        cb()
       }
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        email: '',
+        password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        email: [{ required: true, trigger: 'blur', message: '请输入邮箱前缀（或完整邮箱）' }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
-      passwordType: 'password',
       loading: false,
+      passwordType: 'password',
       redirect: undefined
     }
   },
   watch: {
-    $route: {
+    '$route': {
       handler: function(route) {
-        const query = route.query
-        if (query) {
-          this.redirect = query.redirect
-          this.otherQuery = this.getOtherQuery(query)
-        }
+        this.redirect = route.query && route.query.redirect
       },
       immediate: true
     }
   },
-  mounted() {
-    if (this.loginForm.username === '') {
-      this.$refs.username.focus()
-    } else if (this.loginForm.password === '') {
-      this.$refs.password.focus()
-    }
-  },
   methods: {
-    checkCapslock(e) {
-      const { key } = e
-      this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
-    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -114,32 +96,28 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate(async(valid) => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
+
+          const { email, password } = this.loginForm
+
+          const data = {
+            email: validEmail(email) ? email : `${email}@i9i8.com`,
+            password
+          }
+
+          this.$store.dispatch('user/login', data).then(() => {
+            this.$router.push({ path: this.redirect || '/' }).catch(() => {})
+            this.loading = false
+          }).catch(() => {
+            this.loading = false
+          })
         } else {
-          console.log('error submit!!')
           return false
         }
       })
-    },
-    getOtherQuery(query) {
-      return Object.keys(query).reduce((acc, cur) => {
-        if (cur !== 'redirect') {
-          acc[cur] = query[cur]
-        }
-        return acc
-      }, {})
     }
-
   }
 }
 </script>
@@ -183,7 +161,7 @@ $cursor: #fff;
   }
 
   .el-form-item {
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
@@ -192,8 +170,7 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-
-$bg:#577f92;
+$bg:#2d3a4b;
 $dark_gray:#889aa4;
 $light_gray:#eee;
 $light_blue: #66b1ff;
@@ -203,15 +180,18 @@ $light_blue: #66b1ff;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
+  background: url('~@/assets/images/bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
 
   .login-form {
     position: relative;
-    width: 400px;
+    width: 520px;
     max-width: 100%;
     padding: 35px;
     margin: 160px auto;
     overflow: hidden;
-    background: rgba(57, 75, 85, 0.8);
+    background: rgba(31, 33, 60, 0.8);
     border-radius: 5px;
   }
 
@@ -241,6 +221,7 @@ $light_blue: #66b1ff;
     .title {
       font-size: 26px;
       color: $light_gray;
+      letter-spacing: 5px;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
@@ -265,18 +246,6 @@ $light_blue: #66b1ff;
     margin-bottom:30px;
     &.is-loading {
       border: 0;
-    }
-  }
-
-  .thirdparty-button {
-    position: absolute;
-    right: 0;
-    bottom: 6px;
-  }
-
-  @media only screen and (max-width: 470px) {
-    .thirdparty-button {
-      display: none;
     }
   }
 }
