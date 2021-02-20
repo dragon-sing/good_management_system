@@ -4,22 +4,17 @@
       <h3 class="drawer-title">Page style setting</h3>
 
       <div class="drawer-item">
-        <span>Theme Color</span>
+        <span>主题颜色</span>
         <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
       </div>
 
       <div class="drawer-item">
-        <span>Open Tags-View</span>
+        <span>显示Tags-View</span>
         <el-switch v-model="tagsView" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
-        <span>Fixed Header</span>
-        <el-switch v-model="fixedHeader" class="drawer-switch" />
-      </div>
-
-      <div class="drawer-item">
-        <span>Sidebar Logo</span>
+        <span>显示logo</span>
         <el-switch v-model="sidebarLogo" class="drawer-switch" />
       </div>
 
@@ -36,17 +31,6 @@ export default {
     return {}
   },
   computed: {
-    fixedHeader: {
-      get() {
-        return this.$store.state.settings.fixedHeader
-      },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'fixedHeader',
-          value: val
-        })
-      }
-    },
     tagsView: {
       get() {
         return this.$store.state.settings.tagsView
