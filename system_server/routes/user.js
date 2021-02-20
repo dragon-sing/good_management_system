@@ -1,26 +1,51 @@
-const { updateUser } = require('../db/user.js')
+const { updateUser,getUserByToken } = require('../db/user.js')
 const express = require('express');
-const cookieParser = require('cookie-parser')
-const app = express()
-app.use(cookieParser())
 const router = express.Router();
 
-
-router.put('/user',(req,res) => {
-  // console.log('Cookies: ', !req.cookies.user_id)
-  if (!req.cookies.user_id) {
+router.get('/info',(req,res) => {
+  const token = req.headers['x-token']
+  getUserByToken(token,(result) => {
+    const roles = []
+    if (result) {
+      if (result.is_admin === 1) {
+        roles.push('admin');
+      }
+    }
     res.json({
-      code: 100,
-      msg: '用户未登录'
+      code: 200,
+      data: {
+        ...result,
+        roles
+      }
     })
-    return 
-  }
-  const id = req.cookies.user_id
-  updateUser(id,req.query,(result) => {
+  })
+})
+
+router.post('/logout',(req,res) => {
+  res.json({
+    code: 200,
+    data: '退出成功！'
+  })
+})
+
+router.post('/password', (req,res) => {
+  const token = req.headers['x-token']
+  getUserByToken(token,(result) => {
+    const password = result.password
+    if (password != req.body.old_password) {
+      res.json({
+        code: 100,
+        data: '原密码错误!'
+      })
+      return;
+    }
+    updateUser(req.body,token,(result) => {
       res.json({
         code: 200,
-        data: {}
-      });
+        data: '更新成功!'
+      })
+    })
+
   })
 })
 

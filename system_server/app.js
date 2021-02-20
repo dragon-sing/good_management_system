@@ -15,7 +15,7 @@ let loginRouter=require('./routes/login');
 let userRouter=require('./routes/user');
 
 app.use('/api/',loginRouter)
-app.use('/api/',userRouter)
+app.use('/api/user',userRouter)
 
 
 // 开启服务

@@ -1,18 +1,35 @@
-const { findUserByInfo } = require('../db/login')
+const { findUserByInfo,getUserTokenByInfo } = require('../db/login')
 const express = require('express');
 const router = express.Router();
 
-router.get('/login', (req,res) => {
-  findUserByInfo(req.query,(result) => {
-    if (result)
-      // console.log(result[0].id);
-      res.cookie('user_id',result[0].id,{maxAge: 60*60*1000})
-    res.json({
-      code: 200,
-      data: result[0] || {}
-    })
-    
+router.route('/login').options((req,res,next) => {
+  res.json({
+    code:200
+  })
+}).post((req,res) => {
+  getUserTokenByInfo(req.body,(result) => {
+    let token 
+    if (result[0]) {
+      token = result[0].token
+    } 
+    if (token) {
+      res.json({
+        code: 200,
+        data: {
+          token,
+          msg:'登陆成功！'
+        }
+      })
+    } else {
+      res.json({
+        code: 100,
+        data: {
+          msg: '用户名或密码错误!'
+        }
+      })
+    }
   })
 })
+
 
 module.exports = router;
