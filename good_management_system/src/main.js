@@ -45,6 +45,7 @@ Object.keys(filters).forEach(key => {
 
 Vue.config.productionTip = false
 
+// 创建和挂载路由根实例
 new Vue({
   el: '#app',
   router,
