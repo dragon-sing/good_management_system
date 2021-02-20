@@ -1,5 +1,5 @@
 // 封装dao层
-const { pool } = require('./pool');
+const { pool } = require('../config/pool');
 
 // 查询所有的用户
 let findUsers = (callback)=>{
@@ -41,15 +41,15 @@ let findById = (id,callback)=>{
     })
 }
 
-// 新增用户或修改用户
-let updateUser = (id,obj,callback)=>{
+// 修改密码
+let updateUser = (obj,token,callback)=>{
     pool.getConnection((err,connection)=>{
         if(err) {
             console.log(err);
         } else {
             // 修改
-            let sql = 'update user set username=?,password=? where id=?'
-            connection.query(sql,[obj.username,obj.password,id],(err,result)=>{
+            let sql = 'update user set password=? WHERE id = (SELECT id FROM `Authority` WHERE token = ?)'
+            connection.query(sql,[obj.new_password,token],(err,result)=>{
                 if(err) {
                     console.log(err)
                 } else {
@@ -104,10 +104,31 @@ let deleteById = (id,callback)=>{
     })
 }
 
+// 根据token查询user
+let getUserByToken = (token,callback)=>{
+  pool.getConnection((err,connection)=>{
+      if(err) {
+          console.log(err);
+      } else {
+          let sql = 'SELECT * from `USER` WHERE id = (SELECT id FROM `Authority` WHERE token = ?)'
+          connection.query(sql,[token],(err,result)=>{
+              if(err) {
+                  console.log(err)
+              } else {
+                  callback(result[0])
+                  connection.release()
+                  connection.destroy()
+              }
+          })
+      }
+  })
+}
+
 module.exports = {
     findUsers,
     findById,
     updateUser,
     addUser,
-    deleteById
+    deleteById,
+    getUserByToken
 }
