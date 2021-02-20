@@ -1,4 +1,8 @@
 module.exports = {
+  /**
+   * @type {string}
+   * @description Project title
+   */
   title: '商品管理系统',
 
   /**
@@ -22,7 +26,7 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
    */
-  sidebarLogo: true,
+  sidebarLogo: false,
 
   /**
    * @type {string | array} 'production' | ['production', 'development']

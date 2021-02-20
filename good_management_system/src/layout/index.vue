@@ -1,7 +1,7 @@
 <template>
   <div>
-    <router-link tag="h1" class="app-title" :to="'/homepage'"><svg-icon icon-class="store" />
-      <span>{{ title }}</span>
+    <router-link tag="h1" class="app-title" :to="'/homepage'"><svg-icon icon-class="goods" />
+      <span>商品管理系统</span>
     </router-link>
     <div :class="classObj" class="app-wrapper">
       <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
@@ -22,8 +22,7 @@
 </template>
 
 <script>
-import RightPanel from '@/components/RightPanel'
-import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
+import { AppMain, Navbar, Sidebar } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'
 
@@ -32,10 +31,7 @@ export default {
   components: {
     AppMain,
     Navbar,
-    RightPanel,
-    Settings,
-    Sidebar,
-    TagsView
+    Sidebar
   },
   mixins: [ResizeMixin],
   computed: {
@@ -66,7 +62,7 @@ export default {
 <style lang="scss" scoped>
   @import "~@/styles/mixin.scss";
   @import "~@/styles/variables.scss";
-  .app-title {
+   .app-title {
     margin: 0;
     padding-left: 15px;
     height: 70px;
@@ -78,6 +74,9 @@ export default {
     > span {
       margin-left: 10px;
     }
+  }
+  #app .sidebar-container {
+    position: absolute;
   }
   .app-wrapper {
     @include clearfix;

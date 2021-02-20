@@ -26,7 +26,7 @@ export default {
     return {
       title: '商品管理系统',
       // eslint-disable-next-line no-undef
-      logo: url('D:\\GitHub\\good_management_system\\good_management_system\\src\\assets\\images\\goods.png')
+      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
     }
   }
 }
