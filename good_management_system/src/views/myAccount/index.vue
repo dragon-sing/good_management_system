@@ -4,8 +4,8 @@
       <el-form-item label="旧密码" prop="old_password">
         <el-input v-model="passwordForm.old_password" type="password" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="新密码" prop="password">
-        <el-input v-model="passwordForm.password" type="password" autocomplete="off" />
+      <el-form-item label="新密码" prop="new_password">
+        <el-input v-model="passwordForm.new_password" type="password" autocomplete="off" />
       </el-form-item>
       <el-form-item label="确认新密码" prop="password_confirmation">
         <el-input v-model="passwordForm.password_confirmation" type="password" autocomplete="off" />
@@ -20,7 +20,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-
 export default {
   name: 'Setting',
   data() {
@@ -28,8 +27,8 @@ export default {
       if (value === '') {
         callback(new Error('请输入密码'))
       } else {
-        if (value.length < 6) {
-          callback(new Error('密码最少6位!'))
+        if (value.length < 4) {
+          callback(new Error('密码最少4位!'))
         }
         if (this.passwordForm.old_password === value) {
           callback(new Error('不能和旧密码一致!'))
@@ -43,7 +42,7 @@ export default {
     const validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (value !== this.passwordForm.password) {
+      } else if (value !== this.passwordForm.new_password) {
         callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
@@ -52,11 +51,11 @@ export default {
     return {
       passwordForm: {
         old_password: '',
-        password: '',
+        new_password: '',
         password_confirmation: ''
       },
       rules: {
-        password: [
+        new_password: [
           { validator: validatePass, trigger: 'blur' }
         ],
         password_confirmation: [
@@ -68,7 +67,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'name',
+      'username',
       'roles'
     ])
   },
@@ -77,26 +76,25 @@ export default {
       'updatePassword'
     ]),
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(async(valid) => {
         if (valid) {
           this.loading = true
-          this.updatePassword(this.passwordForm).then(response => {
-            if (response.code === 200) {
-              this.loading = false
-              this.$message({
-                message: `更新密码成功！请重新登录!`,
-                type: 'success'
-              })
-              this.$store.dispatch('user/logout').then(() => {
-                this.$router.push('/login')
-              })
-            } else {
-              this.$message({
-                message: `更新密码失败!`,
-                type: 'error'
-              })
-            }
-          })
+          const { code } = await this.updatePassword(this.passwordForm)
+          if (code === 200) {
+            this.loading = false
+            this.$message({
+              message: `更新密码成功！请重新登录!`,
+              type: 'success'
+            })
+            this.$store.dispatch('user/logout').then(() => {
+              this.$router.push('/login')
+            })
+          } else {
+            this.$message({
+              message: `更新密码失败!`,
+              type: 'error'
+            })
+          }
         } else {
           return false
         }
@@ -107,6 +105,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style lang="scss" scoped>
