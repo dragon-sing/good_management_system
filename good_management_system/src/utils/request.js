@@ -2,6 +2,8 @@ import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import { Loading } from 'element-ui'
+import qs from 'qs'
 
 // create an axios instance
 const service = axios.create({
@@ -46,7 +48,7 @@ service.interceptors.response.use(
     const res = response.data
 
     // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 20000) {
+    if (res.code !== 200) {
       Message({
         message: res.message || 'Error',
         type: 'error',
@@ -82,4 +84,49 @@ service.interceptors.response.use(
   }
 )
 
-export default service
+export default function(
+  option,
+  {
+    loading = false, // 请求 loading，默认不开启
+    text = 'Loading', // loading 提示文本
+    dataType = 'formData', // 请求的数据格式，默认 formData , 可选 formData2, json
+    mock = false // 是否为 mock 模式
+  } = {}
+) {
+  let defaultHeaders = {}
+
+  if (loading) {
+    var loadingInstance = Loading.service({
+      lock: true,
+      text,
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.7)'
+    })
+  }
+
+  if (dataType === 'formData') {
+    defaultHeaders = {
+      'Content-Type': 'application/x-www-form-urlencoded' // 发送 formData 数据格式
+    }
+
+    option.data = qs.stringify(option.data)
+  } else if (dataType === 'formData2') {
+    defaultHeaders = {
+      'Content-Type': 'multipart/form-data' // 含文件
+    }
+  }
+
+  option.headers = Object.assign(defaultHeaders, option.headers || {})
+
+  if (mock && process.env.VUE_APP_MOCK_API) { option.url = `${process.env.VUE_APP_MOCK_API}${option.url}` }
+
+  return new Promise((resolve, reject) => {
+    service(option)
+      .then(resolve)
+      .catch(reject)
+      .finally(() => {
+        if (loading) { loadingInstance.close() }
+      })
+  })
+}
+

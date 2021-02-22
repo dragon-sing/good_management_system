@@ -27,7 +27,8 @@ module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV === 'development',
+  // lintOnSave: process.env.NODE_ENV === 'development',
+  lintOnSave: "warning",
   productionSourceMap: false,
   devServer: {
     port: port,
@@ -35,8 +36,7 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    },
-    before: require('./mock/mock-server.js')
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
@@ -80,7 +80,17 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
-
+    // 设置 vue-loader 中 vue-template-compiler 对 编译好的渲染函数是否会保留所有 HTML 标签之间的空格
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .loader('vue-loader')
+      .tap(options => {
+        options.compilerOptions.preserveWhitespace = true
+        return options
+      })
+      .end()
+    
     config
       .when(process.env.NODE_ENV !== 'development',
         config => {
@@ -120,5 +130,18 @@ module.exports = {
           config.optimization.runtimeChunk('single')
         }
       )
+  }
+}
+
+module.exports = {
+  chainWebpack: config => {
+    config.module
+      .rule('eslint')
+      .use('eslint-loader')
+      .loader('eslint-loader')
+      .tap(options => {
+        options.fix = true
+        return options
+      })
   }
 }

@@ -28,7 +28,7 @@
                 {{ generateElementIconCode(item) }}
               </div>
               <div class="icon-item">
-                <i :class="'el-icon-' + item" />
+                <i :class="'el-icon-' + item"></i>
                 <span>{{ item }}</span>
               </div>
             </el-tooltip>
