@@ -1,23 +1,25 @@
 <template>
-  <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"></div>
-    <sidebar class="sidebar-container" />
-    <div :class="{hasTagsView:needTagsView}" class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
-        <tags-view v-if="needTagsView" />
+  <div>
+    <router-link tag="h1" class="app-title" :to="'/homepage'"><svg-icon icon-class="goods" />
+      <span>商品管理系统</span>
+    </router-link>
+    <div :class="classObj" class="app-wrapper">
+      <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"></div>
+      <sidebar class="sidebar-container" />
+      <div :class="{hasTagsView:needTagsView}" class="main-container">
+        <div>
+          <navbar />
+          <tags-view v-if="needTagsView" />
+        </div>
+        <app-main />
       </div>
-      <app-main />
-      <right-panel v-if="showSettings">
-        <settings />
-      </right-panel>
     </div>
   </div>
+
 </template>
 
 <script>
-import RightPanel from '@/components/RightPanel'
-import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
+import { AppMain, Navbar, Sidebar } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'
 
@@ -26,10 +28,7 @@ export default {
   components: {
     AppMain,
     Navbar,
-    RightPanel,
-    Settings,
-    Sidebar,
-    TagsView
+    Sidebar
   },
   mixins: [ResizeMixin],
   computed: {
@@ -38,7 +37,7 @@ export default {
       device: state => state.app.device,
       showSettings: state => state.settings.showSettings,
       needTagsView: state => state.settings.tagsView,
-      fixedHeader: state => state.settings.fixedHeader
+      title: state => state.settings.title
     }),
     classObj() {
       return {
@@ -60,7 +59,22 @@ export default {
 <style lang="scss" scoped>
   @import "~@/styles/mixin.scss";
   @import "~@/styles/variables.scss";
-
+   .app-title {
+    margin: 0;
+    padding-left: 15px;
+    height: 70px;
+    line-height: 70px;
+    font-size: 24px;
+    font-weight: normal;
+    color: #fff;
+    background: #242f42;
+    > span {
+      margin-left: 10px;
+    }
+  }
+  #app .sidebar-container {
+    position: absolute;
+  }
   .app-wrapper {
     @include clearfix;
     position: relative;

@@ -1,5 +1,9 @@
 module.exports = {
-  title: 'Vue Element Admin',
+  /**
+   * @type {string}
+   * @description Project title
+   */
+  title: '商品管理系统',
 
   /**
    * @type {boolean} true | false
@@ -17,7 +21,6 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether fix the header
    */
-  fixedHeader: false,
 
   /**
    * @type {boolean} true | false

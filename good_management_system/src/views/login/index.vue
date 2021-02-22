@@ -40,7 +40,7 @@
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
-      <el-button :loading="loading" type="primary" class="login-btn" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button :loading="loading" type="primary" class="login-btn" @click.native.prevent="handleLogin">登录</el-button>
     </el-form>
   </div>
 </template>
@@ -60,7 +60,7 @@ export default {
     return {
       loginForm: {
         username: 'jiang',
-        password: '0616'
+        password: '6666'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur' }],
