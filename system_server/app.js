@@ -13,9 +13,13 @@ app.use(cookieParser())
 //引入路径
 let loginRouter=require('./routes/login');
 let userRouter=require('./routes/user');
+let categoryRouter=require('./routes/category');
+let goodRouter=require('./routes/good');
 
 app.use('/api/',loginRouter)
 app.use('/api/user',userRouter)
+app.use('/api/category',categoryRouter)
+app.use('/api/good',goodRouter)
 
 
 // 开启服务
