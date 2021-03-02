@@ -5,7 +5,7 @@ let pool = mysql.createPool({
     host: 'localhost', // 设置为自己的mysql_ip
     port:'3306',
     user:'root',
-    password:'root',
+    password:'123456',
     database: 'good_management_system',
     connectionLimit: 10,
     acquireTimeout: 30000, //30 secs

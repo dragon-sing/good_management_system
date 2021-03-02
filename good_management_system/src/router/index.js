@@ -62,6 +62,7 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
+  // auth-redirect在哪里使用到？
   {
     path: '/auth-redirect',
     component: () => import('@/views/login/auth-redirect'),
@@ -112,6 +113,18 @@ export const asyncRoutes = [
           title: '角色权限',
           roles: ['admin']
         }
+      }
+    ]
+  },
+  {
+    path: '/category',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/category/index'),
+        name: 'Category',
+        meta: { title: '品类管理', icon: 'icon', noCache: true }
       }
     ]
   },

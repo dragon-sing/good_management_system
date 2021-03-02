@@ -76,26 +76,28 @@ export default {
       'updatePassword'
     ]),
     submitForm(formName) {
-      this.$refs[formName].validate(async(valid) => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true
-          const { code } = await this.updatePassword(this.passwordForm)
-          if (code === 200) {
-            this.loading = false
-            this.$message({
-              message: `更新密码成功！请重新登录!`,
-              type: 'success'
+          this.$store.dispatch('user/updatePassword', this.passwordForm)
+            .then(() => {
+              this.loading = false
+              this.$message({
+                message: `更新密码成功！请重新登录!`,
+                type: 'success'
+              })
+              this.$store.dispatch('user/logout').then(() => {
+                this.$router.push('/login')
+              })
             })
-            this.$store.dispatch('user/logout').then(() => {
-              this.$router.push('/login')
+            .catch(() => {
+              this.loading = false
             })
-          } else {
-            this.$message({
-              message: `更新密码失败!`,
-              type: 'error'
-            })
-          }
         } else {
+          this.$message({
+            message: `更新密码失败!`,
+            type: 'error'
+          })
           return false
         }
       })
