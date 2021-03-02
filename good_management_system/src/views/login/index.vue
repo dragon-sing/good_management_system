@@ -60,7 +60,7 @@ export default {
     return {
       loginForm: {
         username: 'jiang',
-        password: '6666'
+        password: '1111'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur' }],
@@ -105,7 +105,7 @@ export default {
         this.$refs.password.focus()
       })
     },
-    async handleLogin() {
+    handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true

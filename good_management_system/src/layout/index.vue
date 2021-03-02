@@ -9,7 +9,6 @@
       <div :class="{hasTagsView:needTagsView}" class="main-container">
         <div>
           <navbar />
-          <tags-view v-if="needTagsView" />
         </div>
         <app-main />
       </div>
