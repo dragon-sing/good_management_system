@@ -57,10 +57,30 @@ let deleteCategoryById = (id,callback)=>{
     })
 }
 
+let updateCategoryById = (id,obj,callback)=>{
+  pool.getConnection((err,connection)=>{
+      if(err) {
+          console.log(err);
+      } else {
+          let sql = 'update category set cat_name = ? , comment = ? where cat_id = ?'
+          connection.query(sql,[obj.cat_name,obj.comment,id],(err,result)=>{
+              if(err) {
+                  console.log(err)
+              } else {
+                  callback(result)
+                  connection.release()
+                  connection.destroy()
+              }
+          })
+      }
+  })
+}
+
 
 
 module.exports = {
     addCategory,
     getCategory,
-    deleteCategoryById
+    deleteCategoryById,
+    updateCategoryById
 }

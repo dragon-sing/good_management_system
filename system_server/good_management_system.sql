@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 20/02/2021 17:03:59
+ Date: 02/03/2021 15:54:25
 */
 
 SET NAMES utf8mb4;
@@ -39,15 +39,18 @@ INSERT INTO `Authority` VALUES (1, 'token-jiang', '2021-02-20 11:30:50');
 -- ----------------------------
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category`  (
-  `cat_id` int(0) NOT NULL,
+  `cat_id` int(0) NOT NULL AUTO_INCREMENT,
   `cat_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `created_time` datetime(0) NULL DEFAULT NULL,
+  `created_time` date NULL DEFAULT NULL,
+  `comment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`cat_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of category
 -- ----------------------------
+INSERT INTO `category` VALUES (1, '裙子', '2021-03-02', '棉做的');
+INSERT INTO `category` VALUES (3, '上衣', '2021-03-02', '夏季');
 
 -- ----------------------------
 -- Table structure for good
@@ -87,6 +90,6 @@ CREATE TABLE `USER`  (
 -- ----------------------------
 -- Records of USER
 -- ----------------------------
-INSERT INTO `USER` VALUES (1, 'jiang', '6666', NULL, 1);
+INSERT INTO `USER` VALUES (1, 'jiang', '0616', NULL, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

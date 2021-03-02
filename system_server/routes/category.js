@@ -1,4 +1,4 @@
-const { addCategory,getCategory,deleteCategoryById } = require('../db/category')
+const { addCategory,getCategory,deleteCategoryById,updateCategoryById } = require('../db/category')
 const express = require('express');
 const router = express.Router();
 
@@ -38,5 +38,15 @@ router.delete('/:cat_id',(req,res) => {
   })
 })
 
-
+router.put('/:cat_id', (req,res) => {
+  const cat_id = req.params.cat_id
+  updateCategoryById(cat_id,req.body,(result) => {
+    res.json({
+      code: 200,
+      data: {
+        msg: '修改成功'
+      }
+    })
+  })
+})
 module.exports = router;
