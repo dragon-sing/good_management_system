@@ -5,8 +5,8 @@ let addCategory = (obj,callback)=>{
         if(err) {
             console.log(err);
         } else {
-            let sql = 'insert into category(cat_name,created_time) values(?,?)'
-            connection.query(sql,[obj.cat_name,obj.created_time],(err,result)=>{
+            let sql = 'insert into category(cat_name,created_time,comment) values(?,?,?)'
+            connection.query(sql,[obj.cat_name,obj.created_time,obj.comment],(err,result)=>{
                 if(err) {
                     console.log(err)
                 } else {
