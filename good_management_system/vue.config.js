@@ -28,7 +28,7 @@ module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
   // lintOnSave: process.env.NODE_ENV === 'development',
-  lintOnSave: "warning",
+  lintOnSave: 'warning',
   productionSourceMap: false,
   devServer: {
     port: port,
@@ -90,7 +90,7 @@ module.exports = {
         return options
       })
       .end()
-    
+
     config
       .when(process.env.NODE_ENV !== 'development',
         config => {
