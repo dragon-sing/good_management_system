@@ -10,9 +10,10 @@
       border
       height="250"
     >
-      <el-table-column align="center" prop="category_id" label="id" width="180" />
-      <el-table-column align="center" prop="category_name" label="名称" width="180" />
-      <el-table-column align="center" prop="category_time" label="创建时间" width="180" />
+      <el-table-column align="center" prop="cat_id" label="id" width="180" />
+      <el-table-column align="center" prop="cat_name" label="名称" width="180" />
+      <el-table-column align="center" prop="created_time" label="创建时间" width="180" />
+      <el-table-column align="center" prop="comment" label="备注" width="180" />
       <el-table-column align="center" prop="" label="操作" width="180">
         <template v-slot="{row}">
           <el-button type="danger" size="mini" @click="del(row)">删除</el-button>
@@ -23,6 +24,8 @@
 </template>
 
 <script>
+import { queryCategory } from '@/api/category'
+
 export default {
   name: 'Category',
   data() {
@@ -34,6 +37,7 @@ export default {
     }
   },
   mounted() {
+    // 调用初始化函数进行初始查询
     this.init()
   },
   methods: {
@@ -41,9 +45,17 @@ export default {
     init() {
       this.query()
     },
-    // 查询是异步函数
-    query() {
 
+    async query() {
+      try {
+        this.loading = true
+        const { data, code } = await queryCategory()
+        if (code === 200) {
+          this.tableData = data
+        }
+      } finally {
+        this.loading = false
+      }
     }
 
   }
