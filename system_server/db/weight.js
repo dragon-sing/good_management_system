@@ -1,14 +1,12 @@
 const { pool } = require('../config/pool');
 
-let addGood = (obj,callback)=>{
+let addWeight = (obj,callback)=>{
     pool.getConnection((err,connection)=>{
         if(err) {
             console.log(err);
         } else {
-            let sql = 'insert into product(product_id,product_name,cat_id,url,is_delete,created_time,description) values(?,?,?,?,0,?,?)'
-            connection.query(sql,
-                [obj.product_id,obj.product_name,obj.cat_id,obj.url,obj.created_time,obj.description ],
-                (err,result)=>{
+            let sql = 'insert into weight(product_id,weight) values(?,?)'
+            connection.query(sql,[obj.product_id,obj.weight],(err,result)=>{
                 if(err) {
                     console.log(err)
                 } else {
@@ -21,7 +19,7 @@ let addGood = (obj,callback)=>{
     })
 }
 
-let getGoods = (sql,callback)=>{
+let getWeight = (sql,callback)=>{
     pool.getConnection((err,connection)=>{
         if(err) {
             console.log(err);
@@ -39,12 +37,12 @@ let getGoods = (sql,callback)=>{
     })
 }
 
-let deleteGoodById = (id,callback)=>{
+let deleteWeightById = (id,callback)=>{
     pool.getConnection((err,connection)=>{
         if(err) {
             console.log(err);
         } else {
-            let sql = 'update product set is_delete = 1 where id = ?'
+            let sql = 'delete from weight where id = ?'
             connection.query(sql,[id],(err,result)=>{
                 if(err) {
                     console.log(err)
@@ -58,29 +56,30 @@ let deleteGoodById = (id,callback)=>{
     })
 }
 
-let updateGoodById = (id,obj,callback)=>{
-    pool.getConnection((err,connection)=>{
-        if(err) {
-            console.log(err);
-        } else {
-            let sql = 'update product set product_name = ? ,cat_id = ?,url = ?,description = ? where id = ?'
-            connection.query(sql,[obj.product_name,obj.cat_id,obj.url,obj.description,id],(err,result)=>{
-                if(err) {
-                    console.log(err)
-                } else {
-                    callback(result)
-                    connection.release()
-                    connection.destroy()
-                }
-            })
-        }
-    })
+let updateWeightById = (id,obj,callback)=>{
+  pool.getConnection((err,connection)=>{
+      if(err) {
+          console.log(err);
+      } else {
+          let sql = 'update weight set weight = ?  where id = ?'
+          connection.query(sql,[obj.weight,id],(err,result)=>{
+              if(err) {
+                  console.log(err)
+              } else {
+                  callback(result)
+                  connection.release()
+                  connection.destroy()
+              }
+          })
+      }
+  })
 }
 
 
+
 module.exports = {
-    addGood,
-    getGoods,
-    deleteGoodById,
-    updateGoodById
+    addWeight,
+    getWeight,
+    deleteWeightById,
+    updateWeightById
 }

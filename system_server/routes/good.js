@@ -1,9 +1,18 @@
-const { addGood,getGoods,deleteGoodById } = require('../db/good')
+const { addGood,getGoods,deleteGoodById,updateGoodById } = require('../db/good')
 const express = require('express');
 const router = express.Router();
 
 router.get('/',(req,res) => {
-    getGoods((result) => {
+  const product = req.query;
+  let sql = "select * from product where"
+  for (let col in product) {
+    sql += ` ${col} = "${product[col]}"`   
+  }
+  if (Object.keys(product).length === 0) {
+    sql = "select * from product"
+  }
+  console.log(sql)
+  getGoods(sql,(result) => {
         res.json({
         code: 200,
         data: result
@@ -12,12 +21,11 @@ router.get('/',(req,res) => {
 })
   
 router.post('/', (req,res) => {
-  const good = req.body;
+  const product = req.body;
   let date = new Date();
-  good.created_time = date.toLocaleDateString();
-  good.is_delete = 0;
-  good.url = ''
-  addGood(category,(result) => {
+  product.created_time = date.toLocaleDateString();
+  product.is_delete = 0;
+  addGood(product,(result) => {
     res.json({
       code: 200,
       data: {
@@ -27,13 +35,24 @@ router.post('/', (req,res) => {
   })
 })  
 
-router.delete('/:good_id',(req,res) => {
-  const good_id = req.params.good_id
-  deleteGoodById(good_id,(result) => {
+router.delete('/:id',(req,res) => {
+  const id = req.params.id
+  deleteGoodById(id,(result) => {
     res.json({
       code: 200,
       data: {
         msg: '删除成功'
+      }
+    })
+  })
+})
+
+router.post('/:id',(req,res) => {
+  updateGoodById(req.body,(result) => {
+    res.json({
+      code: 200,
+      data: {
+        msg: '修改成功'
       }
     })
   })
