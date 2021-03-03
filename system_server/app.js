@@ -15,11 +15,15 @@ let loginRouter=require('./routes/login');
 let userRouter=require('./routes/user');
 let categoryRouter=require('./routes/category');
 let goodRouter=require('./routes/good');
+let weightRouter=require('./routes/weight');
+let skuRouter=require('./routes/sku');
 
 app.use('/api/',loginRouter)
 app.use('/api/user',userRouter)
 app.use('/api/category',categoryRouter)
 app.use('/api/good',goodRouter)
+app.use('/api/weight',weightRouter)
+app.use('/api/sku',skuRouter)
 
 
 // 开启服务
