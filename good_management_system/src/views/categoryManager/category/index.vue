@@ -21,7 +21,7 @@
       </el-table-column>
     </el-table>
 
-    <category-dialog :old-row="oldRow" :visible.sync="visible" @init="init" />
+    <category-dialog :old-row="oldRow" :visible="visible" @update="update()" @init="init" />
   </div>
 </template>
 
@@ -62,10 +62,12 @@ export default {
         this.loading = false
       }
     },
+    // 向子组件dialog传递两个参数, add添加中oldrow是空行
     add() {
       this.visible = true
       this.oldRow = null
     },
+    // edit中oldrow中本来就有数据,将该行row赋值给oldrow
     edit(row) {
       this.visible = true
       this.oldRow = row
@@ -79,6 +81,9 @@ export default {
           this.query()
         }
       })
+    },
+    update(formstate) {
+      this.visible = formstate
     }
   }
 

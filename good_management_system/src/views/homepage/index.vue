@@ -19,7 +19,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { updatePassword } from '@/api/user'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Setting',
   data() {
@@ -72,36 +73,60 @@ export default {
     ])
   },
   methods: {
-    ...mapActions('user', [
-      'updatePassword'
-    ]),
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+    // ...mapActions('user', [
+    //   'updatePassword'
+    // ]),
+    // submitForm(formName) {
+    //   this.$refs[formName].validate((valid) => {
+    //     if (valid) {
+    //       this.loading = true
+    //       this.$store.dispatch('user/updatePassword', this.passwordForm)
+    //         .then(() => {
+    //           this.loading = false
+    //           this.$message({
+    //             message: `更新密码成功！请重新登录!`,
+    //             type: 'success'
+    //           })
+    //           this.$store.dispatch('user/logout').then(() => {
+    //             this.$router.push('/login')
+    //           })
+    //         })
+    //         .catch(() => {
+    //           this.loading = false
+    //         })
+    //     } else {
+    //       this.$message({
+    //         message: `更新密码失败!`,
+    //         type: 'error'
+    //       })
+    //       return false
+    //     }
+    //   })
+    // },
+    async submitForm(formName) {
+      this.$refs[formName].validate(async(valid) => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/updatePassword', this.passwordForm)
-            .then(() => {
-              this.loading = false
-              this.$message({
-                message: `更新密码成功！请重新登录!`,
-                type: 'success'
-              })
-              this.$store.dispatch('user/logout').then(() => {
-                this.$router.push('/login')
-              })
+          const { code } = await updatePassword(this.passwordForm)
+          if (code === 200) {
+            // this.loading = false
+            this.$message({
+              message: `更新密码成功！请重新登录!`,
+              type: 'success'
             })
-            .catch(() => {
-              this.loading = false
+            this.$store.dispatch('user/logout').then(() => {
+              this.$router.push('/login')
             })
-        } else {
-          this.$message({
-            message: `更新密码失败!`,
-            type: 'error'
-          })
-          return false
+          } else {
+            this.$message({
+              message: `更新密码失败!`,
+              type: 'error'
+            })
+          }
         }
       })
     },
+
     resetForm(formName) {
       this.$refs[formName].resetFields()
     }

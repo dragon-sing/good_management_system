@@ -6,9 +6,9 @@ export function queryCategory() {
   })
 }
 
-export function deleteCategory() {
+export function deleteCategory(id) {
   return request({
-    url: '/category/${id}',
+    url: `/category/${id}`,
     method: 'delete'
   })
 }
