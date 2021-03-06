@@ -1,25 +1,9 @@
-const { addSku, getSku, deleteSkuById,updateSkuById } = require('../db/sku')
+const { addReason, getReasons, deleteReasonById, updateReasonById } = require('../db/order_return_reason')
 const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    const sku = req.query;
-    let sql = "select * from sku_stock where"
-    let flag = false
-    for (let col in sku_stock) {
-        if (sku_stock[col]) {
-            sql += ` ${col} = "${sku_stock[col]}" and`;
-            flag = true;
-        }
-    }
-    if (flag) {
-        let len = sql.length;
-        sql = sql.substring(0, len - 3);
-    }
-    if (Object.keys(sku).length === 0) {
-        sql = "select * from sku_stock"
-    }
-    getSku(sql,(result) => {
+    getReasons((result) => {
         res.json({
             code: 200,
             data: result
@@ -28,8 +12,8 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    const sku = req.body;
-    addSku(sku, (result) => {
+    const reason = req.body;
+    addReason(reason, (result) => {
         res.json({
             code: 200,
             data: {
@@ -41,7 +25,7 @@ router.post('/', (req, res) => {
 
 router.delete('/:id', (req, res) => {
     const id = req.params.id
-    deleteSkuById(id, (result) => {
+    deleteReasonById(id, (result) => {
         res.json({
             code: 200,
             data: {
@@ -53,7 +37,7 @@ router.delete('/:id', (req, res) => {
 
 router.put('/:id', (req, res) => {
     const id = req.params.id
-    updateSkuById(id, req.body, (result) => {
+    updateReasonById(id, req.body, (result) => {
         res.json({
             code: 200,
             data: {

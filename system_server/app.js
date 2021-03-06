@@ -17,6 +17,8 @@ let categoryRouter=require('./routes/category');
 let goodRouter=require('./routes/good');
 let weightRouter=require('./routes/weight');
 let skuRouter=require('./routes/sku');
+let orderRouter=require('./routes/order');
+let orderReturnReasonRouter=require('./routes/order_return_reason');
 
 app.use('/api/',loginRouter)
 app.use('/api/user',userRouter)
@@ -24,6 +26,8 @@ app.use('/api/category',categoryRouter)
 app.use('/api/good',goodRouter)
 app.use('/api/weight',weightRouter)
 app.use('/api/sku',skuRouter)
+app.use('/api/order',orderRouter)
+app.use('/api/order_return_reason',orderReturnReasonRouter)
 
 
 // 开启服务

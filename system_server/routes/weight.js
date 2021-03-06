@@ -5,13 +5,21 @@ const router = express.Router();
 router.get('/', (req, res) => {
     const weight = req.query;
     let sql = "select * from weight where"
+    let flag = false
     for (let col in weight) {
-        sql += ` ${col} = "${weight[col]}"`
+        if (weight[col]) {
+            sql += ` ${col} = "${weight[col]}" and`;
+            flag = true;
+        }
+    }
+    if (flag) {
+        let len = sql.length;
+        sql = sql.substring(0, len - 3);
     }
     if (Object.keys(weight).length === 0) {
         sql = "select * from weight"
     }
-    getWeight(sql,(result) => {
+    getWeight(sql, (result) => {
         res.json({
             code: 200,
             data: result

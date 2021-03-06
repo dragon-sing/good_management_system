@@ -5,8 +5,16 @@ const router = express.Router();
 router.get('/',(req,res) => {
   const product = req.query;
   let sql = "select * from product where"
+  let flag = false
   for (let col in product) {
-    sql += ` ${col} = "${product[col]}"`   
+    if (product[col]) {
+      sql += ` ${col} = "${product[col]}" and` ;  
+      flag = true;
+    }
+  }
+  if (flag) {
+    let len = sql.length;
+    sql = sql.substring(0,len-3);
   }
   if (Object.keys(product).length === 0) {
     sql = "select * from product"
