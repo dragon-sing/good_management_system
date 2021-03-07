@@ -36,12 +36,14 @@
         </el-table-column>
         <el-table-column align="center" label="价格">
           <template v-slot="{row}">
-            <el-button v-if="row.price" type="success" size="mini" @click="setPrice">去设置</el-button>
+            <el-button v-if="!row.price" type="success" size="mini" @click="setPrice(row)">去设置</el-button>
+            <span v-else>{{ row.price }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="weight" label="重量">
           <template v-slot="{row}">
-            <el-button v-if="row.weight" type="success" size="mini" @click="setWeight(row)">去设置</el-button>
+            <el-button v-if="!row.weight" type="success" size="mini" @click="setWeight(row)">去设置</el-button>
+            <span v-else>{{ row.weight }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="created_time" label="创建时间" />
