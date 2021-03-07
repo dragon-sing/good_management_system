@@ -13,7 +13,6 @@ router.get('/',(req,res) => {
   
 router.post('/', (req,res) => {
   const category = req.body;
-  console.log(category)
   let date = new Date();
   category.created_time = date.toLocaleDateString();
   addCategory(category,(result) => {

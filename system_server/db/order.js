@@ -23,8 +23,8 @@ let getOrderDetailById = (id,callback)=>{
         if(err) {
             console.log(err);
         } else {
-            let sql = "select * from order where id = ?"
-            connection.query(sql,(err,result)=>{
+            let sql = "select * from `order` where id = ?"
+            connection.query(sql,[id],(err,result)=>{
                 if(err) {
                     console.log(err)
                 } else {
@@ -42,7 +42,7 @@ let deleteOrderById = (id,callback)=>{
         if(err) {
             console.log(err);
         } else {
-            let sql = 'delete from order where id = ?'
+            let sql = 'delete from `order` where id = ?'
             connection.query(sql,[id],(err,result)=>{
                 if(err) {
                     console.log(err)

@@ -22,7 +22,7 @@ router.route('/login').options((req,res,next) => {
       })
     } else {
       res.json({
-        code: 100,
+        code: 401,
         data: {
           msg: '用户名或密码错误!'
         }
