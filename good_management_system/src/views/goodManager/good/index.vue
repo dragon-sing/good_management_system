@@ -1,25 +1,139 @@
 <template>
-  <div>
-    <category-select v-model="cat" width="70%" />
+  <div v-loading="loading" class="app-container ml-10">
+    <div class="flex-inline mt-10">
+      <div class="flex-inline  mr-10">
+        <span class="mr-10">类别:</span>
+        <category-select v-model="form.cat_id" width="70%" />
+      </div>
+      <div class="flex-inline mr-10">
+        <span class="mr-10">商品名:</span>
+        <el-input v-model="form.product_name" />
+      </div>
+      <el-button size="small" type="success" @click="query"> 查询 </el-button>
+    </div>
+    <div class="mt-10">
+      <el-button size="small" type="primary" @click="add"> 添加 </el-button>
+    </div>
+
+    <div class="flex-inline">
+      <el-table
+        class="mt-30"
+        :data="tableData"
+        border
+      >
+        <el-table-column align="center" prop="id" label="id" />
+        <el-table-column align="center" prop="product_id" label="商品id" />
+        <el-table-column align="center" prop="product_name" label="商品id" />
+        <el-table-column align="center" prop="cat_id" label="品类id" />
+        <el-table-column align="center" prop="status_id" label="状态号" />
+        <el-table-column align="center" prop="" label="图片">
+          <template v-slot="{}">
+            <el-image
+              style="width: 80px; height:80px"
+              :src="url"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="价格">
+          <template v-slot="{row}">
+            <el-button v-if="row.price" type="success" size="mini" @click="setPrice">去设置</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="weight" label="重量">
+          <template v-slot="{row}">
+            <el-button v-if="row.weight" type="success" size="mini" @click="setWeight(row)">去设置</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="created_time" label="创建时间" />
+        <el-table-column align="center" prop="description" label="描述" />
+        <el-table-column align="center" prop="" label="操作" width="180">
+          <template v-slot="{row}">
+            <el-button type="success" size="mini" @click="edit(row)">修改</el-button>
+            <el-button type="danger" size="mini" @click="del(row)">删除</el-button>
+          </template>
+        </el-table-column>
+
+      </el-table></div>
+
+    <good-dialog :old-row="oldRow" :visible="visible" @update="update()" @init="init" />
   </div>
 </template>
 
 <script>
+import { getGoods, delGoods } from '@/api/goodManager/good'
 import CategorySelect from '@/components/CategorySelect'
-
+import GoodDialog from './components/goodDialog'
+// 上次跟你说这么写了。
+const defaultForm = () => {
+  return {
+    cat_id: '',
+    product_name: ''
+  }
+}
 export default {
   name: 'Good',
   components: {
-    CategorySelect
+    CategorySelect,
+    GoodDialog
   },
   data() {
     return {
-      cat: ''
+      // 这里面写一个空对象，可以显示操作
+      tableData: [{}],
+      loading: false,
+      visible: false,
+      oldRow: {},
+      form: defaultForm(),
+      url: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1549888855,2453187842&fm=26&gp=0.jpg'
     }
   },
+  mounted() {
+    this.init()
+  },
+
   methods: {
-    handleChange(val) {
-      this.cat = val
+    init() {
+      this.query()
+    },
+
+    async query() {
+      try {
+        this.loading = true
+        const { code, data } = await getGoods(this.form)
+        if (code === 200) {
+          this.tableData = Array.isArray(data) ? data : []
+        }
+      } finally {
+        this.loading = false
+      }
+    },
+
+    add() {
+      this.visible = true
+      this.oldRow = null
+    },
+
+    edit(row) {
+      this.visible = true
+      this.oldRow = row
+    },
+    update(formstate) {
+      this.visible = formstate
+    },
+    del({ cat_id }) {
+      this.$layer.confirm('确定要删除吗?').then(async() => {
+        const { code } = await delGoods(cat_id)
+        if (code === 200) {
+          this.$layer.msg('删除成功。', { type: 'success' })
+          this.query()
+        }
+      })
+    },
+    setWeight({ product_id }) {
+
+    },
+    setPrice({ product_id }) {
+
     }
   }
 }

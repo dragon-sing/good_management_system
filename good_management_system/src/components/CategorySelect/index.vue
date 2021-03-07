@@ -1,20 +1,18 @@
 <template>
-  <div class="ml-10 flex-inline mt-10">
-    <el-select
-      v-model="selected"
-      :loading="loading"
-      placeholder="选择品类"
-      @focus="init"
-      @change="handleChange"
-    >
-      <el-option
-        v-for="item in selectOptions"
-        :key="item.cat_id"
-        :value="item.cat_id"
-        :label="item.cat_name"
-      />
-    </el-select>
-  </div>
+  <el-select
+    v-model="selected"
+    :loading="loading"
+    placeholder="选择品类"
+    @focus="init"
+    @change="handleChange"
+  >
+    <el-option
+      v-for="item in selectOptions"
+      :key="item.cat_id"
+      :value="item.cat_id"
+      :label="item.cat_name"
+    />
+  </el-select>
 
 </template>
 
@@ -22,22 +20,35 @@
 import { getCategoryList } from '@/api/categoryManager'
 export default {
   name: 'CategorySelect',
-  props: {
-    value: {
-      type: Number,
-      default: 0
-    }
-  },
+  //   props: {
+  //     // eslint-disable-next-line vue/prop-name-casing
+  //     v: {
+  //       type: Number,
+  //       default: 0
+  //     }
+  //   },
   data() {
     return {
-      selected: [], // 已选数据
-      selectOptions: [], // 当前下拉数据
+      selected: [], // 已选的数据即一个商品类别,这里传递的是id
+      selectOptions: [], // 当前下拉的所有数据
+      saveOptions: [], // 缓存，不需要每一次都执行query函数
       loading: false // 加载器
     }
   },
+  watch: {
+    selectOptions: {
+      handler() {
+        this.saveOptions = this.selectOptions
+      },
+      immediate: true }
+  },
   methods: {
     init() {
-      this.query()
+      if (this.saveOptions.length === 0) {
+        this.query()
+      } else {
+        this.selectOptions = this.saveOptions
+      }
     },
     async query() {
       try {
