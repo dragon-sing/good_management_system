@@ -16,7 +16,7 @@ router.get('/',(req,res) => {
     let len = sql.length;
     sql = sql.substring(0,len-3);
   }
-  if (Object.keys(product).length === 0) {
+  if (!flag) {
     sql = "select * from product"
   }
   console.log(sql)
