@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
         let len = sql.length;
         sql = sql.substring(0, len - 3);
     }
-    if (flag) {
+    if (!flag) {
         sql = "select * from weight"
     }
     getWeight(sql, (result) => {
