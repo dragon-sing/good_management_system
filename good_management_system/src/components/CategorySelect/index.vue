@@ -3,6 +3,7 @@
     v-model="selected"
     :loading="loading"
     placeholder="选择品类"
+    v-bind="$props"
     @focus="init"
     @change="handleChange"
   >
@@ -20,13 +21,12 @@
 import { getCategoryList } from '@/api/categoryManager'
 export default {
   name: 'CategorySelect',
-  //   props: {
-  //     // eslint-disable-next-line vue/prop-name-casing
-  //     v: {
-  //       type: Number,
-  //       default: 0
-  //     }
-  //   },
+  props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       selected: [], // 已选的数据即一个商品类别,这里传递的是id

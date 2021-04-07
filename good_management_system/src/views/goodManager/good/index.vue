@@ -7,10 +7,11 @@
       </div>
       <div class="flex-inline mr-10">
         <span class="mr-10">商品名:</span>
-        <el-input v-model="form.product_name" />
+        <el-input v-model="form.product_name" style="width:200px" />
       </div>
       <el-button size="small" type="success" @click="query"> 查询 </el-button>
     </div>
+
     <div class="mt-10">
       <el-button size="small" type="primary" @click="add"> 添加 </el-button>
     </div>
@@ -36,7 +37,7 @@
         </el-table-column>
         <el-table-column align="center" label="价格">
           <template v-slot="{row}">
-            <el-button v-if="!row.price" type="success" size="mini" @click="setPrice(row)">去设置</el-button>
+            <el-button v-if="!row.price" type="success" size="mini" @click="setPrice(row)">设置</el-button>
             <span v-else>{{ row.price }}</span>
           </template>
         </el-table-column>
@@ -56,8 +57,9 @@
         </el-table-column>
 
       </el-table></div>
+    <price-dialog :old-row="oldRow2" :visible="pricevisible" @update="update()" @init="init" />
+    <good-dialog :old-row="oldRow" :visible="goodvisible" @update="update()" @init="init" />
 
-    <good-dialog :old-row="oldRow" :visible="visible" @update="update()" @init="init" />
   </div>
 </template>
 
@@ -65,7 +67,7 @@
 import { getGoods, delGoods } from '@/api/goodManager/good'
 import CategorySelect from '@/components/CategorySelect'
 import GoodDialog from './components/goodDialog'
-// 上次跟你说这么写了。
+import PriceDialog from './components/priceDialog'
 const defaultForm = () => {
   return {
     cat_id: '',
@@ -76,15 +78,18 @@ export default {
   name: 'Good',
   components: {
     CategorySelect,
-    GoodDialog
+    GoodDialog,
+    PriceDialog
   },
   data() {
     return {
       // 这里面写一个空对象，可以显示操作
       tableData: [{}],
       loading: false,
-      visible: false,
+      goodvisible: false,
+      pricevisible: false,
       oldRow: {},
+      oldRow2: {},
       form: defaultForm(),
       url: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1549888855,2453187842&fm=26&gp=0.jpg'
     }
@@ -110,17 +115,23 @@ export default {
       }
     },
 
+    setPrice(row) {
+      this.pricevisible = true
+      this.oldRow2 = row
+    },
+
     add() {
-      this.visible = true
+      this.goodvisible = true
       this.oldRow = null
     },
 
     edit(row) {
-      this.visible = true
+      this.goodvisible = true
       this.oldRow = row
     },
     update(formstate) {
-      this.visible = formstate
+      this.pricevisible = formstate
+      this.goodvisible = formstate
     },
     del({ cat_id }) {
       this.$layer.confirm('确定要删除吗?').then(async() => {
@@ -131,12 +142,14 @@ export default {
         }
       })
     },
+    // 去设置重量
     setWeight({ product_id }) {
-
-    },
-    setPrice({ product_id }) {
-
+      this.$router.push({ path: '/goodManager/weight', query: { product_id: product_id }})
     }
+    // // 去设置价格
+    // setPrice({ product_id }) {
+    //   this.$router.push({ path: '/goodManager/price', query: { product_id: product_id }})
+    // }
   }
 }
 </script>

@@ -1,4 +1,4 @@
-const { addGood,getGoods,deleteGoodById,updateGoodById } = require('../db/good')
+const { addGood,getGoods,deleteGoodById,updateGoodById} = require('../db/good')
 const express = require('express');
 const router = express.Router();
 
@@ -56,7 +56,8 @@ router.delete('/:id',(req,res) => {
 })
 
 router.post('/:id',(req,res) => {
-  updateGoodById(req.body,(result) => {
+  const id = req.params.id
+  updateGoodById(id,req.body,(result) => {
     res.json({
       code: 200,
       data: {
@@ -66,5 +67,16 @@ router.post('/:id',(req,res) => {
   })
 })
 
+router.post('/:id',(req,res) =>{
+  const id = req.params.id
+  updatePriceById(id,req.body,(result) => {
+    res.json({
+      code: 200,
+      data: {
+        msg: '修改成功'
+      }
+    })
+  })
+})
 
 module.exports = router;

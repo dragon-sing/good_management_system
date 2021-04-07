@@ -108,28 +108,22 @@ export const asyncRoutes = [
         name: 'Weight',
         meta: { title: '重量配置', icon: 'icon', noCache: true }
       },
-      {
-        path: 'price',
-        component: () => import('@/views/goodManager/price'),
-        name: 'Price',
-        meta: { title: '价格配置', icon: 'icon', noCache: true }
-      },
+      // {
+      //   path: 'price',
+      //   component: () => import('@/views/goodManager/price'),
+      //   name: 'Price',
+      //   meta: { title: '价格配置', icon: 'icon', noCache: true }
+      // },
       {
         path: 'sku',
         component: () => import('@/views/goodManager/sku'),
         name: 'Sku',
         meta: { title: '库存管理', icon: 'icon', noCache: true }
-      },
-      {
-        path: 'up-and-off',
-        component: () => import('@/views/goodManager/upAndOf'),
-        name: 'UpAndOff',
-        meta: { title: '商品上下架管理', icon: 'icon', noCache: true }
       }
     ]
   },
   {
-    path: '/ticket',
+    path: '/orderManager',
     component: Layout,
     meta: {
       title: '订单管理',
@@ -138,28 +132,52 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'ticketList',
-        component: () => import('@/views/ticket/ticketList'),
-        name: 'TicketList',
+        path: 'orderList',
+        component: () => import('@/views/orderManager/orderList'),
+        name: 'OrderList',
         meta: { title: '订单列表', icon: 'icon', noCache: true }
       },
       {
-        path: 'returnTickets',
-        component: () => import('@/views/ticket/returnTickets'),
-        name: 'ReturnTickets',
-        meta: { title: '退货订单', icon: 'icon', noCache: true }
+        path: 'orderInfo',
+        component: () => import('@/views/orderManager/orderInfo'),
+        name: 'OrderInfo',
+        meta: { title: '订单信息', icon: 'icon', noCache: true }
+      },
+      {
+        path: 'orderDeliver',
+        component: () => import('@/views/orderManager/orderDeliver'),
+        name: 'OrderDeliver',
+        meta: { title: '订单发货', icon: 'icon', noCache: true }
+      },
+      {
+        path: 'orderSetting',
+        component: () => import('@/views/orderManager/orderSetting'),
+        name: 'orderSetting',
+        meta: { title: '订单设置', icon: 'icon', noCache: true }
+      },
+      {
+        path: 'returnOrder',
+        component: () => import('@/views/orderManager/returnOrder'),
+        name: 'ReturnOrder',
+        meta: { title: '退货申请处理', icon: 'icon', noCache: true }
+      },
+      {
+        path: 'returnReason',
+        component: () => import('@/views/orderManager/returnReason'),
+        name: 'ReturnReason',
+        meta: { title: '退货原因设置', icon: 'icon', noCache: true }
       }
     ]
   },
   {
-    path: '/icon',
+    path: '/myAccount',
     component: Layout,
     children: [
       {
         path: 'index',
-        component: () => import('@/views/icons/index'),
-        name: 'Icons',
-        meta: { title: '图标', icon: 'icon', noCache: true }
+        component: () => import('@/views/myAccount/index'),
+        name: 'MyAccount',
+        meta: { title: '用户配置', icon: 'icon', noCache: true }
       }
     ]
   },

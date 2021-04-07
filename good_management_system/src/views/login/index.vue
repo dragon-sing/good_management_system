@@ -17,6 +17,7 @@
           name="username"
           type="text"
           tabindex="1"
+          clearable
           autocomplete="on"
         />
       </el-form-item>
@@ -34,6 +35,7 @@
           name="password"
           tabindex="2"
           auto-complete="on"
+          clearable
           @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
@@ -117,8 +119,8 @@ export default {
             .catch(() => {
               this.loading = false
             })
+          this.loading = false
         } else {
-          console.log('error submit!!')
           return false
         }
       })
@@ -137,8 +139,6 @@ export default {
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg:#283443;
 $light_gray:#fff;
@@ -167,10 +167,10 @@ $cursor: #fff;
       height: 47px;
       caret-color: $cursor;
 
-      &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: $cursor !important;
-      }
+      // &:-webkit-autofill {
+      //   box-shadow: 0 0 0px 1000px $bg inset !important;
+      //   -webkit-text-fill-color: $cursor !important;
+      // }
     }
   }
 
@@ -193,7 +193,7 @@ $light_blue: #66b1ff;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  background-image:url('D:\\GitHub\\good_management_system\\good_management_system\\src\\assets\\images\\login-bg.jpg');
   overflow: hidden;
 
   .login-form {

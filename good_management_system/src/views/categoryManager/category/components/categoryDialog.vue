@@ -8,10 +8,10 @@
     :before-close="handleClose"
   >
     <el-form ref="dialogForm" :model="form" label-width="100px" style="width:90%" :rules="rules">
-      <el-form-item label="品类名称" prop="cat_name" autocomplete="off">
+      <el-form-item label="品类名称" prop="cat_name">
         <el-input v-model="form.cat_name" />
       </el-form-item>
-      <el-form-item label="备注" autocomplete="off">
+      <el-form-item label="备注">
         <el-input v-model="form.comment" />
       </el-form-item>
     </el-form>

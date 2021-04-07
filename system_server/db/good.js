@@ -5,9 +5,9 @@ let addGood = (obj,callback)=>{
         if(err) {
             console.log(err);
         } else {
-            let sql = 'insert into product(product_id,product_name,cat_id,url,is_delete,created_time,description) values(?,?,?,?,0,?,?)'
+            let sql = 'insert into product(product_id,product_name,cat_id,url,price,is_delete,created_time,description) values(?,?,?,?,0,?,?)'
             connection.query(sql,
-                [obj.product_id,obj.product_name,obj.cat_id,obj.url,obj.created_time,obj.description ],
+                [obj.product_id,obj.product_name,obj.cat_id,obj.url,obj.price,obj.created_time,obj.description ],
                 (err,result)=>{
                 if(err) {
                     console.log(err)
@@ -63,7 +63,7 @@ let updateGoodById = (id,obj,callback)=>{
         if(err) {
             console.log(err);
         } else {
-            let sql = 'update product set product_name = ? ,cat_id = ?,url = ?,description = ? where id = ?'
+            let sql = 'update product set product_name = ? ,cat_id = ?,url = ?,description = ? where product_id = ?'
             connection.query(sql,[obj.product_name,obj.cat_id,obj.url,obj.description,id],(err,result)=>{
                 if(err) {
                     console.log(err)

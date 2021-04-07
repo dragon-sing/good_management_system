@@ -5,7 +5,7 @@ let addWeight = (obj,callback)=>{
         if(err) {
             console.log(err);
         } else {
-            let sql = 'insert into weight(product_id,weight) values(?,?)'
+            let sql = 'insert into product_weight(product_id,weight) values(?,?)'
             connection.query(sql,[obj.product_id,obj.weight],(err,result)=>{
                 if(err) {
                     console.log(err)
@@ -42,7 +42,7 @@ let deleteWeightById = (id,callback)=>{
         if(err) {
             console.log(err);
         } else {
-            let sql = 'delete from weight where id = ?'
+            let sql = 'delete from product_weight where id = ?'
             connection.query(sql,[id],(err,result)=>{
                 if(err) {
                     console.log(err)
@@ -61,7 +61,7 @@ let updateWeightById = (id,obj,callback)=>{
       if(err) {
           console.log(err);
       } else {
-          let sql = 'update weight set weight = ?  where id = ?'
+          let sql = 'update product_weight set weight = ?  where id = ?'
           connection.query(sql,[obj.weight,id],(err,result)=>{
               if(err) {
                   console.log(err)

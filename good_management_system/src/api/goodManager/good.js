@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询该品类下的商品
+// 查询该品类下的商品 请求头方式
 export const getGoods = (params) => {
   return request({
     url: '/good',
@@ -18,7 +18,7 @@ export const addGoods = (data) => {
   })
 }
 
-// 添加商品
+// 修改商品
 export const updateGoods = (id, data) => {
   return request({
     url: `/good/${id}`,

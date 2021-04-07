@@ -3,10 +3,13 @@
     <div class="flex-inline mt-10">
       <div class="flex-inline  mr-10">
         <span class="flex-inline mr-10">商品ID:</span>
-        <el-input v-model="form.product_id" />
+        <el-input v-model="form.product_id" style="width:200px" />
       </div>
 
       <el-button size="small" type="success" @click="query"> 查询 </el-button>
+    </div>
+    <div class="mt-10">
+      <el-button size="small" type="primary" @click="add"> 添加 </el-button>
     </div>
 
     <div class="flex-inline">
@@ -46,7 +49,7 @@ export default {
   data() {
     return {
       // 这里面写一个空对象，可以显示操作
-      tableData: [{}],
+      tableData: [],
       loading: false,
       visible: false,
       oldRow: {},
@@ -60,6 +63,7 @@ export default {
   methods: {
     init() {
       this.query()
+      this.setWeight()
     },
 
     async query() {
@@ -71,6 +75,18 @@ export default {
         }
       } finally {
         this.loading = false
+      }
+    },
+    // 判断当前url是否携带,
+    setWeight() {
+      if (this.$route.query.hasOwnProperty('product_id')) {
+        console.log('当前ID是:' + this.$route.query.product_id)
+        this.visible = true
+        this.oldRow.product_id = this.$route.query.product_id
+        this.oldRow.weight = ''
+        // this.$router.push('/goodManager/weight')
+      } else {
+        return
       }
     },
 
@@ -86,21 +102,16 @@ export default {
     update(formstate) {
       this.visible = formstate
     },
-    del({ product_id }) {
+    del({ id }) {
       this.$layer.confirm('确定要删除吗?').then(async() => {
-        const { code } = await delWeight(product_id)
+        const { code } = await delWeight(id)
         if (code === 200) {
           this.$layer.msg('删除成功。', { type: 'success' })
           this.query()
         }
       })
-    },
-    setWeight({ product_id }) {
-
-    },
-    setPrice({ product_id }) {
-
     }
+
   }
 }
 </script>

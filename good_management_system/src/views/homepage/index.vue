@@ -1,145 +1,55 @@
 <template>
-  <div class="setting-container">
-    <el-form ref="passwordForm" :model="passwordForm" status-icon :rules="rules" label-width="100px" class="password-form">
-      <el-form-item label="旧密码" prop="old_password">
-        <el-input v-model="passwordForm.old_password" type="password" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="新密码" prop="new_password">
-        <el-input v-model="passwordForm.new_password" type="password" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="确认新密码" prop="password_confirmation">
-        <el-input v-model="passwordForm.password_confirmation" type="password" autocomplete="off" />
-      </el-form-item>
-      <el-form-item>
-        <el-button size="small" type="primary" :loading="loading" @click="submitForm('passwordForm')">提交</el-button>
-        <el-button size="small" @click="resetForm('passwordForm')">重置</el-button>
-      </el-form-item>
-    </el-form>
+  <div v-loading="loading" class="app-container ml-10">
+    <el-button @click="changeTab('bar')"> 条形图</el-button>
+    <el-button @click="changeTab('pie')">饼图</el-button>
+    <component :is="tab" ref="chart" :visitor="source" />
   </div>
 </template>
 
 <script>
-import { updatePassword } from '@/api/user'
-import { mapGetters } from 'vuex'
+import { queryVisitor } from '@/api/visit'
+import bar from './components/bar'
+import pie from './components/pie'
 export default {
-  name: 'Setting',
+  name: 'Homepage',
+  components: {
+    bar,
+    pie
+  },
   data() {
-    const validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        if (value.length < 4) {
-          callback(new Error('密码最少4位!'))
-        }
-        if (this.passwordForm.old_password === value) {
-          callback(new Error('不能和旧密码一致!'))
-        }
-        if (this.passwordForm.password_confirmation !== '') {
-          this.$refs.passwordForm.validateField('password_confirmation')
-        }
-        callback()
-      }
-    }
-    const validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.passwordForm.new_password) {
-        callback(new Error('两次输入密码不一致!'))
-      } else {
-        callback()
-      }
-    }
     return {
-      passwordForm: {
-        old_password: '',
-        new_password: '',
-        password_confirmation: ''
-      },
-      rules: {
-        new_password: [
-          { validator: validatePass, trigger: 'blur' }
-        ],
-        password_confirmation: [
-          { validator: validatePass2, trigger: 'blur' }
-        ]
-      },
-      loading: false
+      loading: false,
+      source: [],
+      tab: 'bar'
     }
   },
-  computed: {
-    ...mapGetters([
-      'username',
-      'roles'
-    ])
+  mounted() {
+    this.init()
   },
   methods: {
-    // ...mapActions('user', [
-    //   'updatePassword'
-    // ]),
-    // submitForm(formName) {
-    //   this.$refs[formName].validate((valid) => {
-    //     if (valid) {
-    //       this.loading = true
-    //       this.$store.dispatch('user/updatePassword', this.passwordForm)
-    //         .then(() => {
-    //           this.loading = false
-    //           this.$message({
-    //             message: `更新密码成功！请重新登录!`,
-    //             type: 'success'
-    //           })
-    //           this.$store.dispatch('user/logout').then(() => {
-    //             this.$router.push('/login')
-    //           })
-    //         })
-    //         .catch(() => {
-    //           this.loading = false
-    //         })
-    //     } else {
-    //       this.$message({
-    //         message: `更新密码失败!`,
-    //         type: 'error'
-    //       })
-    //       return false
-    //     }
-    //   })
-    // },
-    async submitForm(formName) {
-      this.$refs[formName].validate(async(valid) => {
-        if (valid) {
-          this.loading = true
-          const { code } = await updatePassword(this.passwordForm)
-          if (code === 200) {
-            // this.loading = false
-            this.$message({
-              message: `更新密码成功！请重新登录!`,
-              type: 'success'
-            })
-            this.$store.dispatch('user/logout').then(() => {
-              this.$router.push('/login')
-            })
-          } else {
-            this.$message({
-              message: `更新密码失败!`,
-              type: 'error'
-            })
-          }
-        }
-      })
+    async init() {
+      await this.query()
+      this.$refs['chart'].init()
     },
-
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
+    changeTab(tab) {
+      this.tab = tab
+    },
+    async query() {
+      try {
+        this.loading = true
+        const { code, data } = await queryVisitor()
+        if (code === 200) {
+          this.source = data
+        }
+      } finally {
+        this.loading = false
+      }
     }
-  }
-}
+
+  }}
 
 </script>
 
-<style lang="scss" scoped>
-.password-form {
-  margin-top: 20px;
-  .el-input {
-    width: 200px;
-  }
-}
+<style>
+
 </style>

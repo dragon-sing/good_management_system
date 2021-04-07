@@ -8,6 +8,22 @@ export const getWeight = () => {
   })
 }
 
+// 添加商品重量
+export const addWeight = (data) => {
+  return request({
+    url: '/weight',
+    method: 'post',
+    data
+  })
+}
+
+export const updateWeight = (id, data) => {
+  return request({
+    url: `/weight/${id}`,
+    method: 'put',
+    data
+  })
+}
 export function delWeight(id) {
   return request({
     url: `/weight/${id}`,

@@ -15,17 +15,15 @@ router.route('/login').options((req,res,next) => {
     if (token) {
       res.json({
         code: 200,
+        msg:'登陆成功！',
         data: {
-          token,
-          msg:'登陆成功！'
+          token
         }
       })
     } else {
       res.json({
         code: 401,
-        data: {
-          msg: '用户名或密码错误!'
-        }
+        msg: '用户名或密码错误!'
       })
     }
   })

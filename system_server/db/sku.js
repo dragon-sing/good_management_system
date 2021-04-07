@@ -61,8 +61,8 @@ let updateSkuById = (id,obj,callback)=>{
       if(err) {
           console.log(err);
       } else {
-          let sql = 'update sku_stock set stock = ? ,low_stock = ? where id = ?'
-          connection.query(sql,[obj.sku_stock,obj.low_stock,id],(err,result)=>{
+          let sql = 'update sku_stock set stock = ? ,low_stock = ? where product_id = ?'
+          connection.query(sql,[obj.stock,obj.low_stock,id],(err,result)=>{
               if(err) {
                   console.log(err)
               } else {
@@ -74,8 +74,6 @@ let updateSkuById = (id,obj,callback)=>{
       }
   })
 }
-
-
 
 module.exports = {
     addSku,

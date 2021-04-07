@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
     const weight = req.query;
-    let sql = "select * from weight where"
+    let sql = "select * from product_weight where"
     let flag = false
     for (let col in weight) {
         if (weight[col]) {
@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
         sql = sql.substring(0, len - 3);
     }
     if (!flag) {
-        sql = "select * from weight"
+        sql = "select * from product_weight"
     }
     getWeight(sql, (result) => {
         res.json({

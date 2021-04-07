@@ -8,22 +8,20 @@
     :before-close="handleClose"
   >
     <el-form ref="dialogForm" :model="form" label-width="100px" style="width:90%" :rules="rules">
-      <el-form-item v-if="isAdd" label="商品ID" prop="product_id" autocomplete="off">
-        <el-input v-model="form.product_id" />
+      <el-form-item label="商品ID" prop="product_id">
+        <el-input v-model="form.product_id" :disabled="oldRow" />
       </el-form-item>
-      <el-form-item label="商品名称" prop="product_name" autocomplete="off">
+      <el-form-item label="商品名称" prop="product_name">
         <el-input v-model="form.product_name" />
       </el-form-item>
-      <el-form-item v-if="isAdd" label="品类ID" prop="cat_id" autocomplete="off">
-        <el-input v-model="form.cat_id" />
+      <el-form-item label="品类ID" prop="cat_id">
+        <category-select v-model="form.cat_id" width="70%" />
       </el-form-item>
-      <el-form-item v-else label="品类ID" disabled="true" autocomplete="off">
-        <el-input v-model="form.cat_id" />
-      </el-form-item>
-      <el-form-item label="商品图片" autocomplete="off">
+
+      <el-form-item label="商品图片">
         <el-input v-model="form.url" />
       </el-form-item>
-      <el-form-item label="描述" autocomplete="off">
+      <el-form-item label="描述">
         <el-input v-model="form.description" />
       </el-form-item>
     </el-form>
@@ -37,6 +35,7 @@
 
 <script>
 import { addGoods, updateGoods } from '@/api/goodManager/good'
+import CategorySelect from '@/components/CategorySelect'
 
 const defaultForm = () => ({
   product_id: '',
@@ -48,6 +47,9 @@ const defaultForm = () => ({
 })
 export default {
   name: 'GoodDialog',
+  components: {
+    CategorySelect
+  },
   props: {
     visible: {
       type: Boolean,
@@ -107,11 +109,10 @@ export default {
       // 新增
       if (!this.oldRow) {
         this.form = defaultForm()
-        this.isAdd = true
         return
       }
       // 修改
-      this.isAdd = false
+      this.form.product_id = this.oldRow.product_id
       this.form.product_name = this.oldRow.product_name
       this.form.cat_id = this.oldRow.cat_id
       this.form.url = this.oldRow.url
@@ -133,8 +134,9 @@ export default {
           try {
             let res = {}
             this.loading = true
-            // 新增时候
+            // 新增
             if (!this.oldRow) {
+              console.log(this.form)
               res = await addGoods(this.form)
             } else { // 修改时候
               res = await updateGoods(this.oldRow.product_id, this.form)

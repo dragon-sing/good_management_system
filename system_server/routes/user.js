@@ -24,7 +24,7 @@ router.get('/info',(req,res) => {
 router.post('/logout',(req,res) => {
   res.json({
     code: 200,
-    data: '退出成功！'
+    msg: '退出成功！'
   })
 })
 
@@ -35,14 +35,14 @@ router.post('/password', (req,res) => {
     if (password != req.body.old_password) {
       res.json({
         code: 100,
-        data: '原密码错误!'
+        msg: '原密码错误!'
       })
       return;
     }
     updateUser(req.body,token,(result) => {
       res.json({
         code: 200,
-        data: '更新成功!'
+        msg: '更新成功!'
       })
     })
 

@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    const sku = req.query;
+    const sku_stock = req.query;
     let sql = "select * from sku_stock where"
     let flag = false
     for (let col in sku_stock) {
@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
         let len = sql.length;
         sql = sql.substring(0, len - 3);
     }
-    if (Object.keys(sku).length === 0) {
+    if (Object.keys(sku_stock).length === 0) {
         sql = "select * from sku_stock"
     }
     getSku(sql,(result) => {
